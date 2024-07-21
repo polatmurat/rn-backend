@@ -1,4 +1,4 @@
-module.exports.response = () => {
+export const response = () : object => {
     return {
         status: true,
         desc: '',
@@ -7,10 +7,10 @@ module.exports.response = () => {
     };
 };
 
-module.exports.expiresIn = 2 * 24 * 60 * 60;
-module.exports.expiresInMobile = (8 * 30) * 24 * 60 * 60;
+export const expiresIn : number = 2 * 24 * 60 * 60;
+export const expiresInMobile : number = (8 * 30) * 24 * 60 * 60;
 
-module.exports.login_try = {
+export const login_try : object = {
     max_try: 10,
     inside_at: 600
 };
