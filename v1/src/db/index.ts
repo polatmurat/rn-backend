@@ -1,1 +1,0 @@
-module.exports.MySql = require('./MySql');

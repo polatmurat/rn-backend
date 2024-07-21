@@ -6,19 +6,19 @@ let sql: MySQL.Connection | null = null;
 let tryed = 0;
 
 async function connector(): Promise<void> {
-    console.log('Trying to connect MySQL');
+    console.log('Trying to connect MySQL'.magenta.italic);
     let connectionString = {
         connectionLimit: 20,
-        host: '127.0.0.1',
-        port: 3306,
-        database: 'rn-backend',
-        user: 'root',
-        password: '123123xxw'
+        host: `${process.env.DB_HOST}`,
+        port: parseInt(process.env.DB_PORT),
+        database: `${process.env.DB_NAME}`,
+        user: `${process.env.DB_USER}`,
+        password: `${process.env.DB_PASSWORD}`
     }
 
     try {
         sql = await MySQL.createConnection(connectionString);
-        console.log(`Connected to MySQL`.magenta.italic);
+        console.log(`Connected to MySQL`.blue.inverse);
         tryed = 0;
     } catch (error) {
         console.error(error);
@@ -28,7 +28,7 @@ async function connector(): Promise<void> {
             tryed++;
             connector();
         } else {
-            console.log('Can\'t connect to the MySQL, no more won\'t be trying to connect.');
+            console.log('Can\'t connect to the MySQL, no more won\'t be trying to connect.'.red.bold);
         }
     }
 }
@@ -53,7 +53,7 @@ const execute = async (command: string, values: Array<any>) => {
             return [];
         }
         if (typeof rows.insertId !== 'undefined' && rows.insertId > 0) return { id: rows.insertId };
-        if (typeof rows.affectedRows  !== 'undefined' && rows.affectedRows  > 0) return true;
+        if (typeof rows.affectedRows !== 'undefined' && rows.affectedRows > 0) return true;
         return false;
     } catch (error) {
         console.error(error);
@@ -66,5 +66,4 @@ const execute = async (command: string, values: Array<any>) => {
     }
 };
 
-module.exports.mysql = sql;
-module.exports.connector = connector;
+export const MySql = { execute, connector };
