@@ -13,4 +13,8 @@ const toBase64 = (string: string): string => {
     return Buffer.from(`${string}`).toString();
 };
 
-module.exports = { validateEmail, getRandomNumber, toBase64 };
+const fromBase64 = (base64: WithImplicitCoercion<string> | { [Symbol.toPrimitive](hint: "string"): string; }): string => {
+    return Buffer.from(base64, 'base64').toString();
+};
+
+module.exports = { validateEmail, getRandomNumber, toBase64, fromBase64 };
