@@ -4,19 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf dist && npx tsc",
+    "prestart": "npm run build",
+    "start": "nodemon dist/server.js",
+    "preserver": "npm run build",
+    "dev": "concurrently \"tsc -w\"  \"nodemon dist/server.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^20.14.11",
     "colors": "^1.4.0",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-jsdoc-swagger": "^1.8.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.10.3",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "rimraf": "^6.0.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
   }
 }
