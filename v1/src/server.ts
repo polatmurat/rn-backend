@@ -1,18 +1,18 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
 config();
-let port = 3000;
+let port = Number(process.env.PORT);
 import expressJSDocSwagger from 'express-jsdoc-swagger';
 import swagger from './middlewares/swagger'
 import { MySql as db } from './db/MySql';
 const app = express();
 
 if (['development', 'local'].includes(process.env.NODE_ENV)) {
-    port = 3001;
+    port = 5556;
 }
 
-async function connector() {
+async function connector(): Promise<void> {
     await db.connector();
 }
 
@@ -22,6 +22,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 expressJSDocSwagger(app)(swagger);
+
+// def
+app.get('/', (req: Request, res: Response) => {
+    return res.json(
+        { status: true, desc: `RNCource v1 api service - ${process.env.NODE_ENV}` }
+    );
+});
 
 
 
