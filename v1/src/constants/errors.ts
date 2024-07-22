@@ -25,20 +25,16 @@ class CustomErrorBase extends Error implements CustomError {
     }
 };
 
-class Forbidden extends CustomErrorBase {
-    constructor(operation = '', message = '', ...params: any[]) {
-        super('Forbidden', operation, message, 1, 403, ...params);
-    };
-};
+
 class UnAuth extends CustomErrorBase {
     constructor(operation = '', message = '', ...params: any[]) {
         super('UnAuth', operation, message, 0, 401, ...params);
     };
 };
 
-class Conflict extends CustomErrorBase {
+class Forbidden extends CustomErrorBase {
     constructor(operation = '', message = '', ...params: any[]) {
-        super('Conflict', operation, message, 7, 409, ...params);
+        super('Forbidden', operation, message, 1, 403, ...params);
     };
 };
 
@@ -69,6 +65,12 @@ class ServerError extends CustomErrorBase {
 class TooMany extends CustomErrorBase {
     constructor(operation = '', message = '', ...params: any[]) {
         super('TooMany', operation, message, 6, 429, ...params);
+    };
+};
+
+class Conflict extends CustomErrorBase {
+    constructor(operation = '', message = '', ...params: any[]) {
+        super('Conflict', operation, message, 7, 409, ...params);
     };
 };
 

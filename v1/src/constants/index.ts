@@ -1,4 +1,4 @@
-export const response = () : object => {
+export const response = (): { status: boolean; desc: string; httpStatus: number; result: object } => {
     return {
         status: true,
         desc: '',

@@ -29,15 +29,3 @@ export const verify = (token) => {
         throw new ServerError('helpers.jwt.verify', 'server error !');
     }
 };
-
-export const create_with_refresh = (data, refresh_data, options) => {
-    try {
-        return {
-            token: jwt.sign(data, process.env.JWT_SECRET_KEY, options),
-            refresh_token: jwt.sign(refresh_data, process.env.JWT_SECRET_KEY, options)
-        };
-    } catch (error) {
-        console.error(error);
-    }
-    return false;
-};
