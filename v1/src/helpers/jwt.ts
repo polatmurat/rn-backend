@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { ServerError, Forbidden } from '../constants/errors';
 import bcrypt from 'bcrypt';
+import { expiresIn } from '../constants';
 
 
 /**
@@ -10,9 +11,9 @@ import bcrypt from 'bcrypt';
  * @returns 
  */
 
-export const createToken = (user) => {
-    return jwt.sign({ id: user.id, name: user.name }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
+export const createToken = (user_id: string, user_name: string) => {
+    return jwt.sign({ user_id, user_name }, process.env.JWT_SECRET, {
+        expiresIn,
     })
 };
 
@@ -34,6 +35,6 @@ export const hashedPassword = async (password: string): Promise<String> => {
 };
 
 
-export const comparePassword = async (password: string, dbPassword: string): Promise<boolean> => {
+export const comparePassword = async (password: string, dbPassword: string) => {
     return await bcrypt.compare(password, dbPassword);
 };
