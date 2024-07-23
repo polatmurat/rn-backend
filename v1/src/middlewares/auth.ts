@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { response as resp } from '../constants/index';
-import { verify } from '../helpers/jwt'
+import { verifyToken } from '../helpers/jwt'
 import { ServerError, Forbidden, UnAuth } from '../constants/errors';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,10 +8,10 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!req.headers.authorization) throw new UnAuth('middlewares.auth', 'Auth. missing !');
 
-        const verified = verify(req.headers.authorization.split(' ')[1]);
-        
+        const verified = verifyToken(req.headers.authorization.split(' ')[1]);
+
         if (verified) return next();
-        
+
         throw new Forbidden('middlewares.auth', 'Token status false !');
     } catch (error) {
         console.error(error);
