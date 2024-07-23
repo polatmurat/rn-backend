@@ -7,8 +7,6 @@ export const loginControl = async (req: Request, res: Response, next: NextFuncti
     const response = resp();
 
     try {
-        const body = { username: '', password: '' };
-
         if (
             typeof req.body.email !== 'string' ||
             typeof req.body.password !== 'string'
@@ -17,8 +15,6 @@ export const loginControl = async (req: Request, res: Response, next: NextFuncti
         }
 
         if (!validateEmail(req.body.email)) throw new WrongParam('controller.auth.login', 'invalid email type');
-
-        req.body = body;
 
         return next();
     } catch (error) {
@@ -34,8 +30,6 @@ export const registerControl = async (req: Request, res: Response, next: NextFun
     const response = resp();
 
     try {
-        const body = { username: '', email: '', password: '', name: '' };
-
         if (
             typeof req.body.username !== 'string' ||
             typeof req.body.email !== 'string' ||
@@ -50,7 +44,6 @@ export const registerControl = async (req: Request, res: Response, next: NextFun
         if (req.body.password.length < 6) throw new WrongParam('controller.auth.register', 'wrong param, the length of password mus be at least 6 characters.');
         if (req.body.name.length < 1) throw new MissingField('controller.auth.register', 'wrong param, the name field must be filled.');
 
-        req.body = body;
         return next();
     } catch (error) {
         console.error(error);
