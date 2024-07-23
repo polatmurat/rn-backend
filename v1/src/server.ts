@@ -6,6 +6,7 @@ let port = Number(process.env.PORT);
 import expressJSDocSwagger from 'express-jsdoc-swagger';
 import swagger from './middlewares/swagger'
 import { MySql as db } from './db/MySql';
+import routes from './routes/index';
 const app = express();
 
 if (['development', 'local'].includes(process.env.NODE_ENV)) {
@@ -29,6 +30,26 @@ app.get('/', (req: Request, res: Response) => {
         { status: true, desc: `RNCource v1 api service - ${process.env.NODE_ENV}` }
     );
 });
+
+app.use('/api', routes);
+
+/**
+ * 404
+ */
+app.use(function (req, res) {
+    return res.status(404).json(
+        {
+            status: false,
+            desc: 'No endpoint!',
+            result: []
+        }
+    );
+});
+
+app.listen(port, () => {
+    console.log(`rn-course v1 - PORT: ${port}`);
+});
+
 
 
 
