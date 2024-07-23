@@ -33,9 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api', routes);
 
-/**
- * 404
- */
+// 404
 app.use(function (req, res) {
     return res.status(404).json(
         {
@@ -47,7 +45,7 @@ app.use(function (req, res) {
 });
 
 app.listen(port, () => {
-    console.log(`rn-course v1 - PORT: ${port}`);
+    console.log(`rn-course v1 - PORT: ${port}`.magenta.italic.inverse.bold);
 });
 
 
