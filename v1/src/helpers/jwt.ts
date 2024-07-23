@@ -1,16 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { response as resp } from '../constants/index';
 import { ServerError, Forbidden } from '../constants/errors';
-import { NextFunction } from 'express';
+import bcrypt from 'bcrypt';
 
-export const create = (data, options) => {
-    try {
-        return jwt.sign(data, process.env.JWT_SECRET, options);
-    } catch (error) {
-        console.error(error);
-    }
-    return false;
-};
 
 /**
  * jwt token verify and decode
@@ -19,7 +10,13 @@ export const create = (data, options) => {
  * @returns 
  */
 
-export const verify = (token) => {
+export const createToken = (user) => {
+    return jwt.sign({ id: user.id, name: user.name }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    })
+};
+
+export const verifyToken = (token: string) => {
     try {
         return jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
@@ -28,4 +25,15 @@ export const verify = (token) => {
         if (error instanceof jwt.JsonWebTokenError) throw new Forbidden('helpers.jwt.verify', 'token error !');
         throw new ServerError('helpers.jwt.verify', 'server error !');
     }
+};
+
+export const hashedPassword = async (password: string): Promise<String> => {
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+    return hashed;
+};
+
+
+export const comparePassword = async (password: string, dbPassword: string): Promise<boolean> => {
+    return await bcrypt.compare(password, dbPassword);
 };
