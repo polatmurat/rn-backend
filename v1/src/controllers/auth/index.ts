@@ -31,7 +31,6 @@ export const registerControl = async (req: Request, res: Response, next: NextFun
 
     try {
         if (
-            typeof req.body.username !== 'string' ||
             typeof req.body.email !== 'string' ||
             typeof req.body.password !== 'string' ||
             typeof req.body.name !== 'string'
@@ -40,7 +39,6 @@ export const registerControl = async (req: Request, res: Response, next: NextFun
         }
 
         if (!validateEmail(req.body.email)) throw new WrongParam('controller.auth.register', 'wrong param, invalid email type detected.');
-        if (req.body.username.length < 3) throw new WrongParam('controller.auth.register', 'wrong param (username.length) must be at least 3 character');
         if (req.body.password.length < 6) throw new WrongParam('controller.auth.register', 'wrong param, the length of password mus be at least 6 characters.');
         if (req.body.name.length < 1) throw new MissingField('controller.auth.register', 'wrong param, the name field must be filled.');
 

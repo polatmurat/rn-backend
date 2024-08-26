@@ -11,8 +11,8 @@ import { expiresIn } from '../constants';
  * @returns 
  */
 
-export const createToken = (user_id: string, user_name: string) => {
-    return jwt.sign({ user_id, user_name }, process.env.JWT_SECRET, {
+export const createToken = (user_id: string, email: string, name: string) => {
+    return jwt.sign({ user_id, email, name }, process.env.JWT_SECRET, {
         expiresIn,
     })
 };

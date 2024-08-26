@@ -8,15 +8,19 @@ export const login = async (req: Request, res: Response) => {
     const response = resp();
 
     const { email, password } = req.body;
+
+    console.log(email, password);
+
+
     try {
         const userResult = await loginRepo(email);
 
         const user = userResult.data as User[];
         if (user.length > 0) {
             if (await comparePassword(password, user[0].password)) {
-                const token = createToken(user[0].id.toString(), user[0].username);
+                const token = createToken(user[0].id.toString(), user[0].email, user[0].name);
                 response.desc = 'Login Successful.';
-                response.result = { token, user };
+                response.result = { token };
             } else {
                 response.httpStatus = 400;
                 response.desc = 'Login Failure.';
@@ -36,9 +40,9 @@ export const register = async (req: Request, res: Response) => {
     const response = resp();
 
     try {
-        const { username, email, password, name } = req.body;
+        const { email, password, name } = req.body;
 
-        const check = await checkRepo(username, email);
+        const check = await checkRepo(email);
 
         if (!check.status) {
             response.desc = `Register failure. This ${check.path} is already taken.`;
@@ -50,15 +54,13 @@ export const register = async (req: Request, res: Response) => {
 
         const hashed = await hashedPassword(password);
 
-        const userResult = await registerRepo(username, email, hashed, name);
+        const userResult = await registerRepo(email, hashed, name);
 
-        const user = userResult.data as User[];
 
-        if (user.length > 0) {
-            const token = createToken(user[0].id.toString(), user[0].username);
-            response.result = { token, user };
-            response.desc = 'Successfully registered.'
-        }
+        const token = createToken(userResult.id.toString(), email, name);
+        response.result = { token };
+        response.desc = 'Successfully registered.'
+
     } catch (error) {
         console.error(error);
         response.status = false;
